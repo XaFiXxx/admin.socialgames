@@ -9,10 +9,15 @@ import {
 import Login from "./components/login/Login";
 import Navbar from "./components/home/NavBar";
 import Home from "./components/home/Home";
+import UsersIndex from "./components/users/UsersIndex";
 import { useAuth } from "./context/AuthContext";
 
 function App() {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, loading } = useAuth();
+
+  if (loading) {
+    return <div>Loading...</div>; // Afficher un indicateur de chargement
+  }
 
   return (
     <Router>
@@ -29,6 +34,16 @@ function App() {
             path="/home"
             element={
               isAuthenticated ? <Home /> : <Navigate replace to="/login" />
+            }
+          />
+          <Route
+            path="/users/list"
+            element={
+              isAuthenticated ? (
+                <UsersIndex />
+              ) : (
+                <Navigate replace to="/login" />
+              )
             }
           />
           <Route path="/" element={<Navigate replace to="/login" />} />
