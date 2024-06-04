@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import api from '../../configs/axiosConfig';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { confirmAlert } from 'react-confirm-alert';
@@ -13,7 +13,7 @@ function UsersIndex() {
     const fetchUsers = async () => {
       const token = localStorage.getItem('token');
       try {
-        const response = await axios.get('http://localhost:8000/api/dashboard/users', {
+        const response = await api.get('/api/dashboard/users', {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUsers(response.data);
@@ -38,7 +38,7 @@ function UsersIndex() {
           onClick: async () => {
             const token = localStorage.getItem('token');
             try {
-              await axios.delete(`http://localhost:8000/api/users/${userId}`, {
+              await api.delete(`/api/users/${userId}`, {
                 headers: { Authorization: `Bearer ${token}` },
               });
               setUsers(users.filter((user) => user.id !== userId));
@@ -60,8 +60,8 @@ function UsersIndex() {
   const handleAdminToggle = async (userId, isAdmin) => {
     const token = localStorage.getItem('token');
     try {
-      const response = await axios.post(
-        'http://localhost:8000/api/dashboard/user/is_admin',
+      const response = await api.post(
+        '/api/dashboard/user/is_admin',
         { user_id: userId, is_admin: !isAdmin },
         { headers: { Authorization: `Bearer ${token}` } }
       );
