@@ -10,6 +10,7 @@ import Login from "./components/login/Login";
 import Navbar from "./components/home/NavBar";
 import Home from "./components/home/Home";
 import UsersIndex from "./components/users/UsersIndex";
+import GamesIndex from "./components/games/GamesIndex";
 import { useAuth } from "./context/AuthContext";
 
 function App() {
@@ -41,6 +42,16 @@ function App() {
             element={
               isAuthenticated ? (
                 <UsersIndex />
+              ) : (
+                <Navigate replace to="/login" />
+              )
+            }
+          />
+          <Route
+            path="/games/list"
+            element={
+              isAuthenticated ? (
+                <GamesIndex />
               ) : (
                 <Navigate replace to="/login" />
               )

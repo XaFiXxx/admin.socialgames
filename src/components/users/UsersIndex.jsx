@@ -56,7 +56,6 @@ function UsersIndex() {
       ],
     });
   };
-  
 
   const handleAdminToggle = async (userId, isAdmin) => {
     const token = localStorage.getItem('token');
@@ -114,7 +113,7 @@ function UsersIndex() {
                       onClick={() => handleAdminToggle(user.id, user.is_admin)}
                       className={`ml-2 ${user.is_admin ? 'text-yellow-500' : 'text-blue-500'} hover:underline`}
                     >
-                      {user.is_admin ? 'Révoquer Admin' : 'Rendre Admin'}
+                      Admin
                     </button>
                   </td>
                 </tr>
