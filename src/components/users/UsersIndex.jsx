@@ -38,7 +38,7 @@ function UsersIndex() {
           onClick: async () => {
             const token = localStorage.getItem('token');
             try {
-              await api.delete(`/api/users/${userId}`, {
+              await api.post(`/api/dashboard/users/${userId}/delete`, {
                 headers: { Authorization: `Bearer ${token}` },
               });
               setUsers(users.filter((user) => user.id !== userId));
@@ -100,7 +100,7 @@ function UsersIndex() {
                 <tr key={user.id}>
                   <td className="py-2 px-4 border-b border-gray-700">{user.id}</td>
                   <td className="py-2 px-4 border-b border-gray-700">
-                    <img src={`http://localhost:8000/${user.avatar_url}`} alt="Avatar" className="w-10 h-10 rounded-full" />
+                    <img src={`${process.env.REACT_APP_API_URL}/${user.avatar_url}`} alt="Avatar" className="w-10 h-10 rounded-full" />
                   </td>
                   <td className="py-2 px-4 border-b border-gray-700">{user.username}</td>
                   <td className="py-2 px-4 border-b border-gray-700">{user.email}</td>

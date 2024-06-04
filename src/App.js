@@ -1,7 +1,7 @@
 import "./App.css";
 import React from "react";
 import {
-  BrowserRouter as Router,
+  HashRouter as Router,
   Route,
   Routes,
   Navigate,
@@ -16,7 +16,7 @@ function App() {
   const { isAuthenticated, loading } = useAuth();
 
   if (loading) {
-    return <div>Loading...</div>; // Afficher un indicateur de chargement
+    return <div>Loading...</div>;
   }
 
   return (

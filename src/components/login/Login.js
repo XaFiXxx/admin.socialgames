@@ -1,48 +1,59 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
+import React, { useState } from "react";
+import api from "../../configs/axiosConfig";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
+    setError("");
     try {
       // Assure-toi que l'objet envoyé est structuré correctement
       const payload = {
-        email: email, 
-        password: password
+        email: email,
+        password: password,
       };
-      const response = await axios.post('http://localhost:8000/api/dashboard/login', payload);
+      const response = await api.post("/api/dashboard/login", payload);
       if (response.data.user.is_admin) {
         login(response.data.user, response.data.token);
-        localStorage.setItem('user', JSON.stringify(response.data.user));
-        localStorage.setItem('token', response.data.token);
-        navigate('/home');
+        localStorage.setItem("user", JSON.stringify(response.data.user));
+        localStorage.setItem("token", response.data.token);
+        navigate("/home");
       } else {
-        setError("Accès refusé. Seuls les administrateurs peuvent se connecter.");
+        setError(
+          "Accès refusé. Seuls les administrateurs peuvent se connecter."
+        );
       }
     } catch (error) {
       console.error("Erreur lors de la connexion:", error.response);
-      setError(error.response.data.message || 'Échec de la connexion. Veuillez vérifier vos informations.');
+      setError(
+        error.response.data.message ||
+          "Échec de la connexion. Veuillez vérifier vos informations."
+      );
     }
   };
-  
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-800">
       <div className="max-w-md w-full bg-white p-8 border border-gray-300 rounded-lg shadow-lg">
         <h1 className="text-xl font-bold text-center mb-4">Connexion Admin</h1>
-        {error && <p className="bg-red-100 text-red-700 p-2 rounded">{error}</p>}
+        {error && (
+          <p className="bg-red-100 text-red-700 p-2 rounded">{error}</p>
+        )}
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Email
+            </label>
             <input
               type="email"
               id="email"
@@ -54,7 +65,12 @@ function Login() {
             />
           </div>
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">Mot de passe</label>
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Mot de passe
+            </label>
             <input
               type="password"
               id="password"
