@@ -38,7 +38,7 @@ function UsersIndex() {
           onClick: async () => {
             const token = localStorage.getItem('token');
             try {
-              await api.post(`/api/dashboard/users/${userId}/delete`, {
+              await api.delete(`/api/dashboard/users/${userId}/delete`, {
                 headers: { Authorization: `Bearer ${token}` },
               });
               setUsers(users.filter((user) => user.id !== userId));
@@ -56,6 +56,7 @@ function UsersIndex() {
       ],
     });
   };
+  
 
   const handleAdminToggle = async (userId, isAdmin) => {
     const token = localStorage.getItem('token');
