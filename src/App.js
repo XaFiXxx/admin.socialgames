@@ -12,6 +12,7 @@ import Home from "./components/home/Home";
 import UsersIndex from "./components/users/UsersIndex";
 import GamesIndex from "./components/games/GamesIndex";
 import PlatformsIndex from "./components/plateforms/PlateformsIndex";
+import GenresIndex from "./components/genres/GenresIndex";
 import { useAuth } from "./context/AuthContext";
 
 function App() {
@@ -68,6 +69,17 @@ function App() {
               )
             }
           />
+          <Route
+            path="/genres/list"
+            element={
+              isAuthenticated ? (
+                <GenresIndex />
+              ) : (
+                <Navigate replace to="/login" />
+              )
+            }
+          />
+
           <Route path="/" element={<Navigate replace to="/login" />} />
         </Routes>
       </div>
