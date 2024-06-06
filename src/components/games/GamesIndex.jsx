@@ -5,11 +5,13 @@ import 'react-toastify/dist/ReactToastify.css';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import EditGame from './EditGame';
+import CreateGame from './CreateGame'; // Import the CreateGame component
 
 function GamesIndex() {
   const [games, setGames] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedGame, setSelectedGame] = useState(null);
+  const [isCreating, setIsCreating] = useState(false); // State to handle the creation modal
 
   const fetchGames = async () => {
     const token = localStorage.getItem('token');
@@ -64,6 +66,11 @@ function GamesIndex() {
     await fetchGames(); // Recharger la liste des jeux après mise à jour
   };
 
+  const handleAdd = async (newGame) => {
+    setGames((prevGames) => [...prevGames, newGame]);
+    setIsCreating(false);
+  };
+
   if (loading) {
     return <div className="text-center text-gray-300">Chargement des jeux...</div>;
   }
@@ -71,6 +78,12 @@ function GamesIndex() {
   return (
     <div className="container mx-auto p-4">
       <h2 className="text-2xl text-gray-700 font-bold text-center mb-4">Liste des jeux</h2>
+      <button
+        onClick={() => setIsCreating(true)} // Open the creation modal
+        className="mb-4 px-4 py-2 bg-green-500 text-white rounded"
+      >
+        Ajouter un jeu
+      </button>
       <div className="overflow-x-auto">
         <table className="min-w-full bg-gray-800 text-white">
           <thead>
@@ -122,6 +135,9 @@ function GamesIndex() {
       </div>
       {selectedGame && (
         <EditGame game={selectedGame} onClose={() => setSelectedGame(null)} onUpdate={handleUpdate} />
+      )}
+      {isCreating && (
+        <CreateGame onClose={() => setIsCreating(false)} onAdd={handleAdd} />
       )}
     </div>
   );
