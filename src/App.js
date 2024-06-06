@@ -14,6 +14,7 @@ import GamesIndex from "./components/games/GamesIndex";
 import PlatformsIndex from "./components/plateforms/PlateformsIndex";
 import GenresIndex from "./components/genres/GenresIndex";
 import GroupsIndex from "./components/groups/GroupsIndex";
+import PostsIndex from "./components/posts/PostsIndex";
 import { useAuth } from "./context/AuthContext";
 
 function App() {
@@ -85,6 +86,16 @@ function App() {
             element={
               isAuthenticated ? (
                 <GroupsIndex />
+              ) : (
+                <Navigate replace to="/login" />
+              )
+            }
+          />
+          <Route
+            path="/posts/list"
+            element={
+              isAuthenticated ? (
+                <PostsIndex />
               ) : (
                 <Navigate replace to="/login" />
               )
