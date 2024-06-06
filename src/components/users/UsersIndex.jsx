@@ -79,7 +79,7 @@ function UsersIndex() {
 
   return (
     <div className="container mx-auto p-4">
-      <h2 className="text-2xl text-gray-200 font-bold text-center mb-4">Liste des utilisateurs</h2>
+      <h2 className="text-2xl text-gray-700 font-bold text-center mb-4">Liste des utilisateurs</h2>
       <div className="overflow-x-auto">
         <table className="min-w-full bg-gray-800 text-white">
           <thead>

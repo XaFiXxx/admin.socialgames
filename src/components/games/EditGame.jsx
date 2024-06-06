@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import api from '../../configs/axiosConfig';
 import { toast } from 'react-toastify';
+import Select from 'react-select';
 import 'react-toastify/dist/ReactToastify.css';
 
 function EditGame({ game, onClose, onUpdate }) {
@@ -10,8 +11,8 @@ function EditGame({ game, onClose, onUpdate }) {
     developer: game.developer,
     publisher: game.publisher,
     release_date: game.release_date,
-    genres: game.genres.map((genre) => genre.id),
-    platforms: game.platforms.map((platform) => platform.id),
+    genres: game.genres.map((genre) => ({ value: genre.id, label: genre.name })),
+    platforms: game.platforms.map((platform) => ({ value: platform.id, label: platform.name })),
   });
   const [coverImage, setCoverImage] = useState(null);
   const [coverImagePreview, setCoverImagePreview] = useState(game.cover_image ? `${process.env.REACT_APP_API_URL}/${game.cover_image}` : null);
@@ -28,8 +29,8 @@ function EditGame({ game, onClose, onUpdate }) {
           api.get('/api/genres', { headers: { Authorization: `Bearer ${token}` } }),
           api.get('/api/platforms', { headers: { Authorization: `Bearer ${token}` } }),
         ]);
-        setAllGenres(genresResponse.data);
-        setAllPlatforms(platformsResponse.data);
+        setAllGenres(genresResponse.data.map(genre => ({ value: genre.id, label: genre.name })));
+        setAllPlatforms(platformsResponse.data.map(platform => ({ value: platform.id, label: platform.name })));
       } catch (error) {
         console.error('Erreur lors de la récupération des genres et plateformes:', error);
         toast.error('Erreur lors de la récupération des genres et plateformes.');
@@ -60,12 +61,10 @@ function EditGame({ game, onClose, onUpdate }) {
     }));
   };
 
-  const handleMultiSelectChange = (e) => {
-    const { name, options } = e.target;
-    const selectedValues = Array.from(options).filter(option => option.selected).map(option => parseInt(option.value, 10));
+  const handleSelectChange = (selectedOptions, actionMeta) => {
     setFormData((prevFormData) => ({
       ...prevFormData,
-      [name]: selectedValues,
+      [actionMeta.name]: selectedOptions,
     }));
   };
 
@@ -91,7 +90,7 @@ function EditGame({ game, onClose, onUpdate }) {
 
     Object.entries(formData).forEach(([key, value]) => {
       if (Array.isArray(value)) {
-        value.forEach((v) => formDataToSubmit.append(`${key}[]`, v));
+        value.forEach((v) => formDataToSubmit.append(`${key}[]`, v.value));
       } else {
         formDataToSubmit.append(key, value);
       }
@@ -105,7 +104,7 @@ function EditGame({ game, onClose, onUpdate }) {
       const response = await api.post(`/api/dashboard/games/${game.id}/update`, formDataToSubmit, {
         headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data' },
       });
-      onUpdate(response.data); // Appeler la fonction onUpdate avec les données mises à jour
+      onUpdate(response.data.game); // Appeler la fonction onUpdate avec les données mises à jour
       toast.success('Jeu mis à jour avec succès!');
       onClose();
     } catch (error) {
@@ -170,31 +169,25 @@ function EditGame({ game, onClose, onUpdate }) {
           </div>
           <div className="mb-4">
             <label className="block text-gray-300 mb-1">Genres</label>
-            <select
-              multiple
+            <Select
+              isMulti
               name="genres"
               value={formData.genres}
-              onChange={handleMultiSelectChange}
-              className="w-full px-3 py-2 bg-gray-900 text-white border border-gray-700 rounded"
-            >
-              {allGenres.map((genre) => (
-                <option key={genre.id} value={genre.id}>{genre.name}</option>
-              ))}
-            </select>
+              onChange={handleSelectChange}
+              options={allGenres}
+              className="w-full text-black"
+            />
           </div>
           <div className="mb-4">
             <label className="block text-gray-300 mb-1">Plateformes</label>
-            <select
-              multiple
+            <Select
+              isMulti
               name="platforms"
               value={formData.platforms}
-              onChange={handleMultiSelectChange}
-              className="w-full px-3 py-2 bg-gray-900 text-white border border-gray-700 rounded"
-            >
-              {allPlatforms.map((platform) => (
-                <option key={platform.id} value={platform.id}>{platform.name}</option>
-              ))}
-            </select>
+              onChange={handleSelectChange}
+              options={allPlatforms}
+              className="w-full text-black"
+            />
           </div>
           <div className="mb-4">
             <label className="block text-gray-300 mb-1">Image de couverture</label>

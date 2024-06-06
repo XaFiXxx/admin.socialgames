@@ -38,11 +38,11 @@ function Navbar() {
 
   return (
     <nav className="bg-gray-800 text-white">
-      <div className="container mx-auto flex justify-between px-4 py-4">
+      <div className="container mx-auto flex justify-between items-center px-4 py-4">
         <div className="font-bold">
-          <Link to="/">Dashboard</Link>
+          <Link to="/">Dashboard - Social Games</Link>
         </div>
-        <ul className="flex space-x-4">
+        <ul className="flex space-x-4 items-center">
           <li
             onMouseEnter={() =>
               handleMouseEnter(setShowUsersMenu, usersMenuTimeoutRef)
@@ -50,18 +50,16 @@ function Navbar() {
             onMouseLeave={() =>
               handleMouseLeave(setShowUsersMenu, usersMenuTimeoutRef)
             }
+            className="relative"
           >
-            <button className="hover:bg-gray-700 px-3 py-2 rounded">
+            <Link
+              to="/users/list"
+              className="hover:bg-gray-700 px-3 py-2 rounded"
+            >
               Users
-            </button>
+            </Link>
             {showUsersMenu && (
               <div className="absolute mt-2 py-2 w-48 bg-gray-700 rounded shadow-lg z-10">
-                <Link
-                  to="/users/list"
-                  className="block px-4 py-2 hover:bg-gray-600"
-                >
-                  Liste des utilisateurs
-                </Link>
                 <Link
                   to="/users/add"
                   className="block px-4 py-2 hover:bg-gray-600"
@@ -78,18 +76,16 @@ function Navbar() {
             onMouseLeave={() =>
               handleMouseLeave(setShowGamesMenu, gamesMenuTimeoutRef)
             }
+            className="relative"
           >
-            <button className="hover:bg-gray-700 px-3 py-2 rounded">
+            <Link
+              to="/games/list"
+              className="hover:bg-gray-700 px-3 py-2 rounded"
+            >
               Games
-            </button>
+            </Link>
             {showGamesMenu && (
               <div className="absolute mt-2 py-2 w-48 bg-gray-700 rounded shadow-lg z-10">
-                <Link
-                  to="/games/list"
-                  className="block px-4 py-2 hover:bg-gray-600"
-                >
-                  Liste des jeux
-                </Link>
                 <Link
                   to="/games/add"
                   className="block px-4 py-2 hover:bg-gray-600"
@@ -106,18 +102,16 @@ function Navbar() {
             onMouseLeave={() =>
               handleMouseLeave(setShowPlatformsMenu, platformsMenuTimeoutRef)
             }
+            className="relative"
           >
-            <button className="hover:bg-gray-700 px-3 py-2 rounded">
+            <Link
+              to="/platforms/list"
+              className="hover:bg-gray-700 px-3 py-2 rounded"
+            >
               Platforms
-            </button>
+            </Link>
             {showPlatformsMenu && (
               <div className="absolute mt-2 py-2 w-48 bg-gray-700 rounded shadow-lg z-10">
-                <Link
-                  to="/platforms/list"
-                  className="block px-4 py-2 hover:bg-gray-600"
-                >
-                  Liste des plateformes
-                </Link>
                 <Link
                   to="/platforms/add"
                   className="block px-4 py-2 hover:bg-gray-600"
@@ -134,18 +128,16 @@ function Navbar() {
             onMouseLeave={() =>
               handleMouseLeave(setShowGenresMenu, genresMenuTimeoutRef)
             }
+            className="relative"
           >
-            <button className="hover:bg-gray-700 px-3 py-2 rounded">
+            <Link
+              to="/genres/list"
+              className="hover:bg-gray-700 px-3 py-2 rounded"
+            >
               Genres
-            </button>
+            </Link>
             {showGenresMenu && (
               <div className="absolute mt-2 py-2 w-48 bg-gray-700 rounded shadow-lg z-10">
-                <Link
-                  to="/genres/list"
-                  className="block px-4 py-2 hover:bg-gray-600"
-                >
-                  Liste des genres
-                </Link>
                 <Link
                   to="/genres/add"
                   className="block px-4 py-2 hover:bg-gray-600"
@@ -162,18 +154,16 @@ function Navbar() {
             onMouseLeave={() =>
               handleMouseLeave(setShowGroupsMenu, groupsMenuTimeoutRef)
             }
+            className="relative"
           >
-            <button className="hover:bg-gray-700 px-3 py-2 rounded">
+            <Link
+              to="/groups/list"
+              className="hover:bg-gray-700 px-3 py-2 rounded"
+            >
               Groups
-            </button>
+            </Link>
             {showGroupsMenu && (
               <div className="absolute mt-2 py-2 w-48 bg-gray-700 rounded shadow-lg z-10">
-                <Link
-                  to="/groups/list"
-                  className="block px-4 py-2 hover:bg-gray-600"
-                >
-                  Liste des groupes
-                </Link>
                 <Link
                   to="/groups/add"
                   className="block px-4 py-2 hover:bg-gray-600"
@@ -190,18 +180,16 @@ function Navbar() {
             onMouseLeave={() =>
               handleMouseLeave(setShowPostsMenu, postsMenuTimeoutRef)
             }
+            className="relative"
           >
-            <button className="hover:bg-gray-700 px-3 py-2 rounded">
+            <Link
+              to="/posts/list"
+              className="hover:bg-gray-700 px-3 py-2 rounded"
+            >
               Posts
-            </button>
+            </Link>
             {showPostsMenu && (
               <div className="absolute mt-2 py-2 w-48 bg-gray-700 rounded shadow-lg z-10">
-                <Link
-                  to="/posts/list"
-                  className="block px-4 py-2 hover:bg-gray-600"
-                >
-                  Liste des posts
-                </Link>
                 <Link
                   to="/posts/add"
                   className="block px-4 py-2 hover:bg-gray-600"

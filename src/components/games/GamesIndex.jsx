@@ -11,22 +11,22 @@ function GamesIndex() {
   const [loading, setLoading] = useState(true);
   const [selectedGame, setSelectedGame] = useState(null);
 
-  useEffect(() => {
-    const fetchGames = async () => {
-      const token = localStorage.getItem('token');
-      try {
-        const response = await api.get('/api/dashboard/games', {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setGames(response.data);
-        setLoading(false);
-      } catch (error) {
-        console.error('Erreur lors de la récupération des jeux:', error);
-        toast.error('Erreur lors de la récupération des jeux.');
-        setLoading(false);
-      }
-    };
+  const fetchGames = async () => {
+    const token = localStorage.getItem('token');
+    try {
+      const response = await api.get('/api/dashboard/games', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setGames(response.data);
+      setLoading(false);
+    } catch (error) {
+      console.error('Erreur lors de la récupération des jeux:', error);
+      toast.error('Erreur lors de la récupération des jeux.');
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchGames();
   }, []);
 
@@ -59,9 +59,9 @@ function GamesIndex() {
     });
   };
 
-  const handleUpdate = (updatedGame) => {
-    setGames((prevGames) => prevGames.map((game) => (game.id === updatedGame.id ? updatedGame : game)));
+  const handleUpdate = async () => {
     setSelectedGame(null);
+    await fetchGames(); // Recharger la liste des jeux après mise à jour
   };
 
   if (loading) {
