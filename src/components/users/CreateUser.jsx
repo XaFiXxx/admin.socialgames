@@ -100,6 +100,15 @@ function CreateUser({ onClose, onAdd }) {
     }
   };
 
+  const europeanCountries = [
+    'Albania', 'Andorra', 'Armenia', 'Austria', 'Azerbaijan', 'Belarus', 'Belgium', 'Bosnia and Herzegovina', 
+    'Bulgaria', 'Croatia', 'Cyprus', 'Czech Republic', 'Denmark', 'Estonia', 'Finland', 'France', 'Georgia', 
+    'Germany', 'Greece', 'Hungary', 'Iceland', 'Ireland', 'Italy', 'Kazakhstan', 'Kosovo', 'Latvia', 'Liechtenstein', 
+    'Lithuania', 'Luxembourg', 'Malta', 'Moldova', 'Monaco', 'Montenegro', 'Netherlands', 'North Macedonia', 
+    'Norway', 'Poland', 'Portugal', 'Romania', 'Russia', 'San Marino', 'Serbia', 'Slovakia', 'Slovenia', 
+    'Spain', 'Sweden', 'Switzerland', 'Turkey', 'Ukraine', 'United Kingdom', 'Vatican City'
+  ];
+
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 overflow-auto">
       <div ref={modalRef} className="bg-gray-800 p-6 rounded-lg shadow-lg text-white w-3/4 max-w-lg max-h-full overflow-y-auto">
@@ -156,13 +165,19 @@ function CreateUser({ onClose, onAdd }) {
           </div>
           <div className="mb-4">
             <label className="block text-gray-300 mb-1">Localisation</label>
-            <input
-              type="text"
+            <select
               name="location"
               value={formData.location}
               onChange={handleChange}
               className="w-full px-3 py-2 bg-gray-900 text-white border border-gray-700 rounded"
-            />
+            >
+              <option value="">Sélectionnez un pays</option>
+              {europeanCountries.map((country) => (
+                <option key={country} value={country}>
+                  {country}
+                </option>
+              ))}
+            </select>
           </div>
           <div className="mb-4">
             <label className="block text-gray-300 mb-1">Avatar</label>
