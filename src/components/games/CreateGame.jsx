@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import Select from 'react-select';
 import 'react-toastify/dist/ReactToastify.css';
 
-function CreateGame({ onClose, onAdd }) {
+function CreateGame({ onClose }) {
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -101,12 +101,11 @@ function CreateGame({ onClose, onAdd }) {
     }
 
     try {
-      const response = await api.post('/api/dashboard/games/create', formDataToSubmit, {
+      await api.post('/api/dashboard/games/create', formDataToSubmit, {
         headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data' },
       });
-      onAdd(response.data); // Appeler la fonction onAdd avec les données créées
       toast.success('Jeu ajouté avec succès!');
-      onClose();
+      window.location.reload(); // Forcer le rafraîchissement de la page
     } catch (error) {
       console.error('Erreur lors de la création du jeu:', error);
       toast.error('Erreur lors de la création du jeu.');
