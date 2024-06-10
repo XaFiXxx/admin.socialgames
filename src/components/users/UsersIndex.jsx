@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import api from '../../configs/axiosConfig';
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
@@ -94,6 +94,7 @@ function UsersIndex() {
 
   return (
     <div className="container mx-auto p-4">
+      <ToastContainer position="bottom-right" autoClose={2000} hideProgressBar newestOnTop closeOnClick />
       <h2 className="text-2xl text-gray-700 font-bold text-center mb-4">Liste des utilisateurs</h2>
       <button
         onClick={() => setIsCreating(true)}
@@ -107,6 +108,8 @@ function UsersIndex() {
             <tr>
               <th className="py-2 px-4 border-b border-gray-700 text-left">ID</th>
               <th className="py-2 px-4 border-b border-gray-700 text-left">Avatar</th>
+              <th className="py-2 px-4 border-b border-gray-700 text-left">Nom</th>
+              <th className="py-2 px-4 border-b border-gray-700 text-left">Prénom</th>
               <th className="py-2 px-4 border-b border-gray-700 text-left">Nom d'utilisateur</th>
               <th className="py-2 px-4 border-b border-gray-700 text-left">Email</th>
               <th className="py-2 px-4 border-b border-gray-700 text-left">Biographie</th>
@@ -123,6 +126,8 @@ function UsersIndex() {
                   <td className="py-2 px-4 border-b border-gray-700">
                     <img src={`${process.env.REACT_APP_API_URL}/${user.avatar_url}`} alt="Avatar" className="w-10 h-10 rounded-full" />
                   </td>
+                  <td className="py-2 px-4 border-b border-gray-700">{user.name}</td>
+                  <td className="py-2 px-4 border-b border-gray-700">{user.surname}</td>
                   <td className="py-2 px-4 border-b border-gray-700">{user.username}</td>
                   <td className="py-2 px-4 border-b border-gray-700">{user.email}</td>
                   <td className="py-2 px-4 border-b border-gray-700">{user.biography}</td>
@@ -142,7 +147,7 @@ function UsersIndex() {
               ))
             ) : (
               <tr>
-                <td colSpan="8" className="text-center py-2">Aucun utilisateur trouvé.</td>
+                <td colSpan="10" className="text-center py-2">Aucun utilisateur trouvé.</td>
               </tr>
             )}
           </tbody>

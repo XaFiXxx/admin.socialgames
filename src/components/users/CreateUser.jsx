@@ -5,6 +5,8 @@ import 'react-toastify/dist/ReactToastify.css';
 
 function CreateUser({ onClose, onAdd }) {
   const [formData, setFormData] = useState({
+    name: '',
+    surname: '',
     username: '',
     email: '',
     password: '',
@@ -114,6 +116,26 @@ function CreateUser({ onClose, onAdd }) {
       <div ref={modalRef} className="bg-gray-800 p-6 rounded-lg shadow-lg text-white w-3/4 max-w-lg max-h-full overflow-y-auto">
         <h2 className="text-2xl mb-4">Ajouter un utilisateur</h2>
         <form onSubmit={handleSubmit}>
+          <div className="mb-4">
+            <label className="block text-gray-300 mb-1">Nom</label>
+            <input
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              className="w-full px-3 py-2 bg-gray-900 text-white border border-gray-700 rounded"
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-300 mb-1">Prénom</label>
+            <input
+              type="text"
+              name="surname"
+              value={formData.surname}
+              onChange={handleChange}
+              className="w-full px-3 py-2 bg-gray-900 text-white border border-gray-700 rounded"
+            />
+          </div>
           <div className="mb-4">
             <label className="block text-gray-300 mb-1">Nom d'utilisateur</label>
             <input

@@ -5,9 +5,10 @@ import 'react-toastify/dist/ReactToastify.css';
 
 function EditUser({ user, onClose, onUpdate }) {
   const [formData, setFormData] = useState({
+    name: user.name || "",
+    surname: user.surname || "",
     username: user.username,
     email: user.email,
-    password: '',
     biography: user.biography,
     birthday: user.birthday,
     location: user.location,
@@ -18,6 +19,15 @@ function EditUser({ user, onClose, onUpdate }) {
   const [coverPreview, setCoverPreview] = useState(user.cover_url ? `${process.env.REACT_APP_API_URL}/${user.cover_url}` : null);
 
   const modalRef = useRef(null);
+
+  const europeanCountries = [
+    'Albania', 'Andorra', 'Armenia', 'Austria', 'Azerbaijan', 'Belarus', 'Belgium', 'Bosnia and Herzegovina', 
+    'Bulgaria', 'Croatia', 'Cyprus', 'Czech Republic', 'Denmark', 'Estonia', 'Finland', 'France', 'Georgia', 
+    'Germany', 'Greece', 'Hungary', 'Iceland', 'Ireland', 'Italy', 'Kazakhstan', 'Kosovo', 'Latvia', 'Liechtenstein', 
+    'Lithuania', 'Luxembourg', 'Malta', 'Moldova', 'Monaco', 'Montenegro', 'Netherlands', 'North Macedonia', 
+    'Norway', 'Poland', 'Portugal', 'Romania', 'Russia', 'San Marino', 'Serbia', 'Slovakia', 'Slovenia', 
+    'Spain', 'Sweden', 'Switzerland', 'Turkey', 'Ukraine', 'United Kingdom', 'Vatican City'
+  ];
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -106,6 +116,26 @@ function EditUser({ user, onClose, onUpdate }) {
         <h2 className="text-2xl mb-4">Modifier l'utilisateur</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
+            <label className="block text-gray-300 mb-1">Nom</label>
+            <input
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              className="w-full px-3 py-2 bg-gray-900 text-white border border-gray-700 rounded"
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-300 mb-1">Prénom</label>
+            <input
+              type="text"
+              name="surname"
+              value={formData.surname}
+              onChange={handleChange}
+              className="w-full px-3 py-2 bg-gray-900 text-white border border-gray-700 rounded"
+            />
+          </div>
+          <div className="mb-4">
             <label className="block text-gray-300 mb-1">Nom d'utilisateur</label>
             <input
               type="text"
@@ -121,16 +151,6 @@ function EditUser({ user, onClose, onUpdate }) {
               type="email"
               name="email"
               value={formData.email}
-              onChange={handleChange}
-              className="w-full px-3 py-2 bg-gray-900 text-white border border-gray-700 rounded"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-300 mb-1">Mot de passe</label>
-            <input
-              type="password"
-              name="password"
-              value={formData.password}
               onChange={handleChange}
               className="w-full px-3 py-2 bg-gray-900 text-white border border-gray-700 rounded"
             />
@@ -156,13 +176,19 @@ function EditUser({ user, onClose, onUpdate }) {
           </div>
           <div className="mb-4">
             <label className="block text-gray-300 mb-1">Localisation</label>
-            <input
-              type="text"
+            <select
               name="location"
               value={formData.location}
               onChange={handleChange}
               className="w-full px-3 py-2 bg-gray-900 text-white border border-gray-700 rounded"
-            />
+            >
+              <option value="">Sélectionnez un pays</option>
+              {europeanCountries.map((country) => (
+                <option key={country} value={country}>
+                  {country}
+                </option>
+              ))}
+            </select>
           </div>
           <div className="mb-4">
             <label className="block text-gray-300 mb-1">Avatar</label>
