@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import api from "../../configs/axiosConfig";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import Cookies from "js-cookie";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -19,11 +20,14 @@ function Login() {
         email: email,
         password: password,
       };
+      await api.get("/sanctum/csrf-cookie");
       const response = await api.post("/api/dashboard/login", payload);
       if (response.data.user.is_admin) {
         login(response.data.user, response.data.token);
-        localStorage.setItem("user", JSON.stringify(response.data.user));
-        localStorage.setItem("token", response.data.token);
+        Cookies.set("user", JSON.stringify(response.data.user), {
+          expires: 0.0035,
+        }); // 5 minutes
+        Cookies.set("token", response.data.token, { expires: 0.0035 }); // 5 minutes
         navigate("/home");
       } else {
         setError(

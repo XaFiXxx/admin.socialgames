@@ -6,6 +6,7 @@ import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import EditGame from './EditGame';
 import CreateGame from './CreateGame'; // Import the CreateGame component
+import Cookies from 'js-cookie'; // Importer js-cookie
 
 function GamesIndex() {
   const [games, setGames] = useState([]);
@@ -14,16 +15,17 @@ function GamesIndex() {
   const [isCreating, setIsCreating] = useState(false); // State to handle the creation modal
 
   const fetchGames = async () => {
-    const token = localStorage.getItem('token');
     try {
+      // On suppose que l'utilisateur est authentifié et que le token est dans les cookies
+      const token = Cookies.get("token");
       const response = await api.get('/api/dashboard/games', {
         headers: { Authorization: `Bearer ${token}` },
       });
       setGames(response.data);
-      setLoading(false);
     } catch (error) {
       console.error('Erreur lors de la récupération des jeux:', error);
       toast.error('Erreur lors de la récupération des jeux.');
+    } finally {
       setLoading(false);
     }
   };
@@ -40,8 +42,8 @@ function GamesIndex() {
         {
           label: 'Oui',
           onClick: async () => {
-            const token = localStorage.getItem('token');
             try {
+              const token = Cookies.get("token");
               await api.delete(`/api/dashboard/games/${gameId}/delete`, {
                 headers: { Authorization: `Bearer ${token}` },
               });

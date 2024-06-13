@@ -5,55 +5,54 @@ import React, {
   useEffect,
   useCallback,
 } from "react";
+import Cookies from "js-cookie";
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [loading, setLoading] = useState(true); // Ajouter un état de chargement
-
-  const login = (userData, token) => {
-    setUser(userData);
-    localStorage.setItem("user", JSON.stringify(userData));
-    localStorage.setItem("token", token);
-    setIsAuthenticated(true);
-  };
-
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem("user");
-    localStorage.removeItem("token");
-    setIsAuthenticated(false);
-  };
-
-  const checkUserLoggedIn = useCallback(() => {
-    const storedUser = localStorage.getItem("user");
-    const storedToken = localStorage.getItem("token");
-    if (storedUser && storedToken) {
-      setUser(JSON.parse(storedUser));
-      setIsAuthenticated(true);
-    } else {
-      setIsAuthenticated(false);
-    }
-    setLoading(false); // Fin du chargement après vérification
-  }, []);
+  const [auth, setAuth] = useState({
+    isAuthenticated: !!Cookies.get("token"),
+    user: Cookies.get("user") ? JSON.parse(Cookies.get("user")) : null,
+    token: Cookies.get("token") || "",
+  });
 
   useEffect(() => {
-    checkUserLoggedIn();
-  }, [checkUserLoggedIn]);
+    const user = Cookies.get("user");
+    const token = Cookies.get("token");
+
+    if (token && user) {
+      setAuth({
+        isAuthenticated: true,
+        user: JSON.parse(user),
+        token: token,
+      });
+    }
+  }, []);
+
+  const login = (user, token) => {
+    const expirationMinutes = 5 / 1440; // Expiration des cookies à 5 minutes pour les tests
+    Cookies.set("token", token, { expires: expirationMinutes });
+    Cookies.set("user", JSON.stringify(user), { expires: expirationMinutes });
+    setAuth({
+      isAuthenticated: true,
+      user: user,
+      token: token,
+    });
+  };
+
+  const logout = useCallback(() => {
+    Cookies.remove("token");
+    Cookies.remove("user");
+    setAuth({
+      isAuthenticated: false,
+      user: null,
+      token: "",
+    });
+    window.location.href = "/login";
+  }, []);
 
   return (
-    <AuthContext.Provider
-      value={{
-        user,
-        isAuthenticated,
-        login,
-        logout,
-        checkUserLoggedIn,
-        loading,
-      }}
-    >
+    <AuthContext.Provider value={{ ...auth, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
